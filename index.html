@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="si" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMING IDU ACCOUNT STORE | No.1 FF Account Store</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff003c',
+                            cyan: '#00f0ff',
+                            dark: '#0a0a0f',
+                            card: '#12121a',
+                            border: '#2a2a3a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Poppins:wght@300;400;600;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #0a0a0f; color: #fff; }
+        .font-gaming { font-family: 'Teko', sans-serif; }
+        .neon-border { box-shadow: 0 0 15px rgba(255, 0, 60, 0.4); }
+        .neon-border-cyan { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+        .bg-grid { background-image: radial-gradient(rgba(255, 0, 60, 0.15) 1px, transparent 0); background-size: 24px 24px; }
+    </style>
+</head>
+<body class="bg-grid min-h-screen text-slate-100 pb-20">
+
+    <!-- Admin Configuration -->
+    <script>
+        const ADMIN_WHATSAPP = "0703035881"; // Your Admin WhatsApp Number
+        const ADMIN_PASSCODE = "1103"; // New Admin Passcode (11 0 3 / 1103)
+    </script>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-red-600 to-cyan-500 flex items-center justify-center font-bold text-xl font-gaming shadow-lg shadow-red-600/30">
+                    GI
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold font-gaming tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-pink-500 to-cyan-400">
+                        GAMING IDU <span class="text-xs text-cyan-400 font-sans uppercase bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">Store</span>
+                    </h1>
+                    <p class="text-[10px] text-slate-400 -mt-1 hidden sm:block">Trusted Free Fire Account Marketplace</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="openUploadModal()" class="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white font-bold px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-red-600/30 transition transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>Sell Account</span>
+                </button>
+                <button onclick="toggleAdminPanel()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm border border-slate-700 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-shield text-cyan-400"></i>
+                    <span id="adminBtnText">Admin</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="relative overflow-hidden bg-gradient-to-b from-red-950/30 via-slate-950 to-slate-950 border-b border-slate-800/80 py-8 px-4">
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <span class="inline-block bg-red-500/10 text-red-400 border border-red-500/30 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                🔥 No.1 Free Fire Account Hub in Sri Lanka
+            </span>
+            <h2 class="text-3xl md:text-5xl font-extrabold font-gaming uppercase tracking-wide mb-2 text-slate-100">
+                Buy & Sell Verified <span class="text-cyan-400">FF Accounts</span>
+            </h2>
+            <p class="text-xs md:text-sm text-slate-400 max-w-xl mx-auto mb-6">
+                ඔබේ අතේ ඇති බජට් එකට ගැලපෙන ඕනෑම Free Fire Account එකක් පහසුවෙන්ම සොයාගන්න. 100% විශ්වාසනීයයි!
+            </p>
+
+            <!-- Live Stats Badges -->
+            <div class="flex flex-wrap justify-center gap-4 text-xs font-medium">
+                <div class="bg-slate-900/80 border border-slate-800 px-4 py-2 rounded-xl text-slate-300">
+                    <i class="fa-solid fa-shield-halved text-emerald-400 mr-1.5"></i> Admin Guarantee
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 px-4 py-2 rounded-xl text-slate-300">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> Direct WhatsApp Support
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 px-4 py-2 rounded-xl text-slate-300">
+                    <i class="fa-solid fa-infinity text-cyan-400 mr-1.5"></i> Unlimited Budget Range
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <!-- Search & Dynamic Budget Filter Bar (UNLIMITED) -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 md:p-6 mb-8 shadow-xl backdrop-blur">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                
+                <!-- Keyword Search -->
+                <div class="md:col-span-4 relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Account Level, Evo Guns, Hip Hop..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs md:text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
+                </div>
+
+                <!-- Dynamic Budget Filter -->
+                <div class="md:col-span-5 bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl">
+                    <div class="flex justify-between items-center mb-1 text-xs">
+                        <span class="text-slate-400 font-semibold"><i class="fa-solid fa-coins text-amber-400 mr-1"></i> Budget Range (LKR):</span>
+                        <span class="text-cyan-400 font-bold font-mono" id="budgetValueText">Rs. 0 - Any Price</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="range" id="priceRange" min="0" max="200000" step="1000" value="200000" oninput="updatePriceFilterText()" class="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        <input type="number" id="maxPriceInput" placeholder="Max Rs." oninput="syncMaxPriceFromInput()" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-cyan-300 text-right focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="md:col-span-3">
+                    <select id="sortSelect" onchange="applyFilters()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs md:text-sm text-slate-300 focus:outline-none focus:border-cyan-500">
+                        <option value="default">Sort By: Featured</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="level-desc">Highest Level</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-3 text-xs text-slate-500 border-t border-slate-800/60 pt-3">
+                <span id="accountCountText">Showing All Accounts</span>
+                <button onclick="resetFilters()" class="text-xs text-red-400 hover:text-red-300 font-medium">Reset Filters</button>
+            </div>
+        </div>
+
+        <!-- Account Cards Grid -->
+        <div id="accountsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Content Injected Here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="noResultsState" class="hidden text-center py-16 bg-slate-900/30 rounded-2xl border border-dashed border-slate-800 my-6">
+            <i class="fa-solid fa-ghost text-4xl text-slate-600 mb-3"></i>
+            <h3 class="text-slate-300 font-bold text-lg">No Accounts Found</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">ඔබ සෙවූ බජට් එකට අදාළ Accounts හමු වූයේ නැත. Budget එක වැඩි කර නැවත උත්සාහ කරන්න.</p>
+        </div>
+    </main>
+
+    <!-- Modal: Sell / Upload Account -->
+    <div id="uploadModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-xl font-bold font-gaming tracking-wide text-cyan-400 mb-1">
+                <i class="fa-solid fa-upload mr-2"></i> SELL YOUR FF ACCOUNT
+            </h3>
+            <p class="text-xs text-slate-400 mb-4">ඔබේ Account එකේ විස්තර සහ ෆොටෝ ඇතුළත් කරන්න.</p>
+
+            <form id="uploadForm" onsubmit="handleAccountUpload(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Account Title / Highlight *</label>
+                    <input type="text" id="accTitle" required placeholder="e.g. Cobra MP40 Max + HipHop Bundle" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Selling Price (Rs.) *</label>
+                        <input type="number" id="accPrice" required placeholder="e.g. 15000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Account Level *</label>
+                        <input type="number" id="accLevel" required placeholder="e.g. 72" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Evo Weapons Count</label>
+                        <input type="number" id="accEvos" placeholder="e.g. 4 Evos" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Like Count</label>
+                        <input type="number" id="accLikes" placeholder="e.g. 12500" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <!-- PRIVATE SELLER PHONE FIELD -->
+                <div class="bg-amber-950/30 border border-amber-800/60 rounded-xl p-3">
+                    <label class="block text-xs font-semibold text-amber-300 mb-1">
+                        <i class="fa-solid fa-lock text-amber-400 mr-1"></i> Seller WhatsApp / Phone Number *
+                    </label>
+                    <input type="text" id="accSellerPhone" required placeholder="e.g. 0771234567" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <p class="text-[10px] text-amber-400/80 mt-1">
+                        🔒 මෙම දුරකථන අංකය Website හිමිකරුට (Admin) පමණක් පෙනෙන අතර Buyers ලට කිසිවිටෙකත් නොපෙනේ.
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Account Description & Outfits</label>
+                    <textarea id="accDesc" rows="3" placeholder="ඇඳුම් පැළඳුම්, ගන් ස්කින් සහ වෙනත් විස්තර..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"></textarea>
+                </div>
+
+                <!-- Unlimited Photo Upload -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Account Photos (Unlimited Uploads)</label>
+                    <input type="file" id="accPhotos" multiple accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-cyan-400 hover:file:bg-slate-700">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-lg shadow-red-600/30 mt-2">
+                    Publish Account Listing
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-xl font-bold font-gaming text-emerald-400 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-user-shield"></i> GAMING IDU ADMIN PANEL
+            </h3>
+            <p class="text-xs text-slate-400 mb-6">වෙබ් අඩවියේ ඇති සියලුම Accounts වල අයිතිකරුවන්ගේ පෞද්ගලික WhatsApp අංක මෙතැනින් බලන්න.</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 font-semibold bg-slate-950">
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Title</th>
+                            <th class="p-3">Price</th>
+                            <th class="p-3">Seller Contact (Private)</th>
+                            <th class="p-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-slate-800/60">
+                        <!-- Admin Records Injected Here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Admin WhatsApp Quick Button -->
+    <a href="https://wa.me/94703035881?text=Hello%20GAMING%20IDU%20Admin,%20මමට%20Account%20එකක්%20ගැනීමට%20අවශ්‍යයි" target="_blank" class="fixed bottom-6 right-6 z-30 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-3.5 rounded-full shadow-2xl shadow-emerald-500/50 flex items-center gap-2 transition transform hover:scale-105">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <span class="hidden md:inline text-xs font-sans">Chat with Owner</span>
+    </a>
+
+    <!-- Application Script Logic -->
+    <script>
+        let accountsData = [
+            {
+                id: 'acc-1',
+                title: 'EVO COBRA MP40 MAX + HIP HOP BUNDLE',
+                price: 125000,
+                level: 78,
+                likes: 24500,
+                evos: 7,
+                sellerPhone: '0771122334',
+                desc: 'Old Elite passes (S2 HipHop), Cobra MP40 Max, AK Draco Max, M1014 Green Max. Fully Stacked VVIP Account.',
+                images: ['https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80']
+            },
+            {
+                id: 'acc-2',
+                title: 'POKER MP40 + SEASON 5 ELITE PASS',
+                price: 65000,
+                level: 71,
+                likes: 14200,
+                evos: 4,
+                sellerPhone: '0719876543',
+                desc: 'Flashing Spade MP40, Season 5 pass, Titan Scar, Bunny Warrior bundle.',
+                images: ['https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&auto=format&fit=crop&q=80']
+            },
+            {
+                id: 'acc-3',
+                title: 'BUDGET EVO AK ACCOUNT (LEVEL 65)',
+                price: 12500,
+                level: 65,
+                likes: 5800,
+                evos: 1,
+                sellerPhone: '0783344556',
+                desc: 'Blue Flame Draco Lv.4, Good weapon skins, 150+ sets.',
+                images: ['https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80']
+            },
+            {
+                id: 'acc-4',
+                title: 'STARTER ACCOUNT WITH 2000 DIAMONDS',
+                price: 4500,
+                level: 52,
+                likes: 1800,
+                evos: 0,
+                sellerPhone: '0701112233',
+                desc: 'Ideal starter ID with diamonds saved and basic gun skins.',
+                images: ['https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80']
+            }
+        ];
+
+        let isAdminLoggedIn = false;
+
+        function renderGrid(list) {
+            const grid = document.getElementById('accountsGrid');
+            const noResults = document.getElementById('noResultsState');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                noResults.classList.remove('hidden');
+                document.getElementById('accountCountText').innerText = "0 Accounts Available";
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            document.getElementById('accountCountText').innerText = `Showing ${list.length} Free Fire Account(s)`;
+
+            list.forEach(acc => {
+                const img = acc.images && acc.images.length > 0 ? acc.images[0] : 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80';
+                
+                const cardHtml = `
+                    <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 rounded-2xl overflow-hidden transition duration-300 shadow-xl flex flex-col justify-between group">
+                        <div>
+                            <div class="relative h-48 bg-slate-950 overflow-hidden">
+                                <img src="${img}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute top-3 right-3 bg-red-600 text-white font-extrabold font-mono text-xs px-2.5 py-1 rounded-lg shadow">
+                                    Rs. ${acc.price.toLocaleString()}
+                                </div>
+                                <div class="absolute bottom-2 left-2 flex gap-2">
+                                    <span class="bg-slate-950/80 backdrop-blur text-cyan-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-slate-800">
+                                        <i class="fa-solid fa-trophy text-amber-400 mr-1"></i> Lv. ${acc.level}
+                                    </span>
+                                    ${acc.evos > 0 ? `<span class="bg-slate-950/80 backdrop-blur text-pink-400 text-[10px] font-semibold px-2 py-0.5 rounded border border-slate-800"><i class="fa-solid fa-fire mr-1"></i> ${acc.evos} Evos</span>` : ''}
+                                </div>
+                            </div>
+
+                            <div class="p-4">
+                                <h4 class="font-extrabold text-sm text-slate-100 line-clamp-1 group-hover:text-cyan-400 transition mb-1">${acc.title}</h4>
+                                <p class="text-[11px] text-slate-400 line-clamp-2 mb-3 leading-relaxed">${acc.desc || 'No additional description provided.'}</p>
+                                
+                                <div class="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800/80 pt-2 mb-3">
+                                    <span><i class="fa-solid fa-thumbs-up text-cyan-500/80 mr-1"></i> ${acc.likes || 0} Likes</span>
+                                    <span><i class="fa-solid fa-shield text-emerald-500/80 mr-1"></i> Verified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BUY NOW Button (Directs to ADMIN WhatsApp) -->
+                        <div class="px-4 pb-4">
+                            <a href="https://wa.me/94${ADMIN_WHATSAPP.replace(/^0/, '')}?text=Hello%20GAMING%20IDU!%20මම%20${encodeURIComponent(acc.title)}%20(Price:%20Rs.%20${acc.price})%20Account%20එක%20ගන්න%20කැමතියි." target="_blank" class="w-full bg-slate-800 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition group-hover:shadow-lg group-hover:shadow-emerald-600/20">
+                                <i class="fa-brands fa-whatsapp text-sm text-emerald-400 group-hover:text-white"></i>
+                                <span>BUY NOW (CONTACT OWNER)</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function updatePriceFilterText() {
+            const val = parseInt(document.getElementById('priceRange').value);
+            document.getElementById('maxPriceInput').value = val >= 200000 ? '' : val;
+            document.getElementById('budgetValueText').innerText = val >= 200000 ? "Rs. 0 - Any Price" : `Rs. 0 - Rs. ${val.toLocaleString()}`;
+            applyFilters();
+        }
+
+        function syncMaxPriceFromInput() {
+            const inputVal = parseInt(document.getElementById('maxPriceInput').value);
+            if (!isNaN(inputVal) && inputVal >= 0) {
+                document.getElementById('priceRange').value = Math.min(inputVal, 200000);
+                document.getElementById('budgetValueText').innerText = `Rs. 0 - Rs. ${inputVal.toLocaleString()}`;
+            } else {
+                document.getElementById('priceRange').value = 200000;
+                document.getElementById('budgetValueText').innerText = "Rs. 0 - Any Price";
+            }
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const maxPriceVal = parseInt(document.getElementById('maxPriceInput').value);
+            const sliderVal = parseInt(document.getElementById('priceRange').value);
+            
+            const effectiveMaxPrice = !isNaN(maxPriceVal) ? maxPriceVal : (sliderVal < 200000 ? sliderVal : Infinity);
+            const sort = document.getElementById('sortSelect').value;
+
+            let filtered = accountsData.filter(acc => {
+                const matchSearch = acc.title.toLowerCase().includes(search) || acc.desc.toLowerCase().includes(search);
+                const matchPrice = acc.price <= effectiveMaxPrice;
+                return matchSearch && matchPrice;
+            });
+
+            if (sort === 'price-asc') filtered.sort((a,b) => a.price - b.price);
+            if (sort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+            if (sort === 'level-desc') filtered.sort((a,b) => b.level - a.level);
+
+            renderGrid(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('priceRange').value = 200000;
+            document.getElementById('maxPriceInput').value = '';
+            document.getElementById('sortSelect').value = 'default';
+            document.getElementById('budgetValueText').innerText = "Rs. 0 - Any Price";
+            renderGrid(accountsData);
+        }
+
+        function openUploadModal() { document.getElementById('uploadModal').classList.remove('hidden'); }
+        function closeUploadModal() { document.getElementById('uploadModal').classList.add('hidden'); }
+
+        function handleAccountUpload(e) {
+            e.preventDefault();
+            const newAcc = {
+                id: 'acc-' + Date.now(),
+                title: document.getElementById('accTitle').value,
+                price: parseFloat(document.getElementById('accPrice').value) || 0,
+                level: parseInt(document.getElementById('accLevel').value) || 1,
+                likes: parseInt(document.getElementById('accLikes').value) || 0,
+                evos: parseInt(document.getElementById('accEvos').value) || 0,
+                sellerPhone: document.getElementById('accSellerPhone').value,
+                desc: document.getElementById('accDesc').value,
+                images: ['https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80']
+            };
+
+            accountsData.unshift(newAcc);
+            applyFilters();
+            closeUploadModal();
+            document.getElementById('uploadForm').reset();
+            alert('ඔබගේ Account එක සාර්ථකව Upload විය!');
+        }
+
+        // Updated Passcode Validation Logic
+        function toggleAdminPanel() {
+            if (!isAdminLoggedIn) {
+                const inputPass = prompt("කරුණාකර Admin Passcode එක ඇතුළත් කරන්න:");
+                // Validates both "1103" and "11 0 3"
+                if (inputPass && (inputPass.trim() === "1103" || inputPass.trim() === "11 0 3")) {
+                    isAdminLoggedIn = true;
+                    document.getElementById('adminBtnText').innerText = "Admin View";
+                    renderAdminTable();
+                    document.getElementById('adminModal').classList.remove('hidden');
+                } else if (inputPass !== null) {
+                    alert("වැරදි Passcode එකකි! (Passcode: 1103)");
+                }
+            } else {
+                renderAdminTable();
+                document.getElementById('adminModal').classList.remove('hidden');
+            }
+        }
+
+        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            accountsData.forEach(acc => {
+                const tr = `
+                    <tr class="hover:bg-slate-800/40">
+                        <td class="p-3 font-mono text-slate-500">${acc.id}</td>
+                        <td class="p-3 font-semibold text-slate-200">${acc.title}</td>
+                        <td class="p-3 text-red-400 font-bold">Rs. ${acc.price.toLocaleString()}</td>
+                        <td class="p-3 font-mono text-amber-300 bg-amber-950/20 rounded-lg">${acc.sellerPhone || 'Not Provided'}</td>
+                        <td class="p-3">
+                            <a href="https://wa.me/94${(acc.sellerPhone || '').replace(/^0/, '')}?text=Hello!%20GAMING%20IDU%20Website%20එකෙන්%20කතා කරන්නේ.%20ඔබගේ%20${encodeURIComponent(acc.title)}%20Account%20එක%20විකිණී%20ඇත.%20කරුණාකර%20රු.20%20කොමිස්%20මුදල%20ලබාදී%20විස්තර%20ලබාගන්න." target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1 rounded text-[11px] inline-flex items-center gap-1">
+                                <i class="fa-brands fa-whatsapp"></i> Chat Seller
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        // Initial Render
+        renderGrid(accountsData);
+    </script>
+</body>
+</html>
